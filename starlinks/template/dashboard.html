@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+      padding-top: 1rem;
+    }
+
+    .sidebar a {
+      color: #adb5bd;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      color: white;
+    }
+
+    .dashboard-header {
+      background-color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #343a40;
+      margin-right: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        width: 250px;
+        height: 100%;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-2 sidebar" id="sidebar">
+  <h5 class="text-center">
+    <img src="{% static 'images/logo.png' %}" style="height: 60px;" alt="">
+  </h5>
+  <ul class="nav flex-column px-2">
+    <li class="nav-item"><a class="nav-link" href="Dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active text-white" href="product">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="orders">Orders</a></li>
+        <li class="nav-item"><a class="nav-link" href="customers">Customers</a></li>
+        <li class="nav-item"><a class="nav-link" href="reports">Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="settings">Settings</a></li>
+  </ul>
+</nav>
+
+    <!-- Main content -->
+    <div class="main-content col-md-10 ms-sm-auto col-lg-10 px-md-4">
+      <main>
+        <div class="dashboard-header d-flex justify-content-between align-items-center mt-2">
+          <div class="d-flex align-items-center">
+            <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+            <h4 class="mb-0">Dashboard Overview</h4>
+          </div>
+          <div>
+            <button class="btn btn-outline-primary btn-sm">Notifications</button>
+            <button class="btn btn-outline-secondary btn-sm">Profile</button>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <!-- Cards -->
+          <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary h-100">
+              <div class="card-body">
+                <h5 class="card-title">Total Sales</h5>
+                <p class="card-text fs-4">$12,400</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success h-100">
+              <div class="card-body">
+                <h5 class="card-title">Orders</h5>
+                <p class="card-text fs-4">320</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card text-white bg-warning h-100">
+              <div class="card-body">
+                <h5 class="card-title">Low Inventory</h5>
+                <p class="card-text fs-4">8 Items</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Sales Trend</h5>
+            <canvas id="salesChart" height="100"></canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js Script -->
+<script>
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  const salesChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Sales ($)',
+        data: [500, 700, 400, 900, 1200, 1500, 1000],
+        backgroundColor: 'rgba(13, 110, 253, 0.2)',
+        borderColor: '#0d6efd',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+
+  // Sidebar Toggle Script
+  document.getElementById('sidebarToggle').addEventListener('click', function () {
+    document.getElementById('sidebar').classList.toggle('active');
+  });
+</script>
+
+</body>
+</html>
