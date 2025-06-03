@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-)g01cqyn5=1pok)gtn$o9twk@ne#2#x4j0#kcey*c=h=ir1ywt
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGIN = []
 
 
 # Application definition
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.runserver_nostatic',
 ]
 
 ROOT_URLCONF = 'starlinks.urls'
@@ -122,6 +125,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [Path.joinpath(BASE_DIR, 'static')]
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
